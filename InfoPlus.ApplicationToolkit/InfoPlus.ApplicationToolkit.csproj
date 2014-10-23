@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{469E42BF-A349-434C-8147-3A9E353CE85A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InfoPlus.ApplicationToolkit</RootNamespace>
+    <AssemblyName>InfoPlus.ApplicationToolkit</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>SJTU.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SJTU.SJTURight.ApplicationToolkit">
+      <HintPath>..\Libraries\SJTU.SJTURight.ApplicationToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Studio.Foundation.Json">
+      <HintPath>..\Libraries\Studio.Foundation.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationSettings.cs" />
+    <Compile Include="Entities\CodeList.cs" />
+    <Compile Include="Entities\CodeSuggestion.cs" />
+    <Compile Include="Entities\InfoPlusApplication.cs" />
+    <Compile Include="Entities\InfoPlusEntity.cs" />
+    <Compile Include="Entities\InfoPlusEvent.cs" />
+    <Compile Include="Entities\InfoPlusFile.cs" />
+    <Compile Include="Entities\InfoPlusResponse.cs" />
+    <Compile Include="Entities\ServiceType.cs" />
+    <Compile Include="EventTypes.cs" />
+    <Compile Include="Entities\FormField.cs" />
+    <Compile Include="Entities\FormInstance.cs" />
+    <Compile Include="Entities\FormTemplate.cs" />
+    <Compile Include="AbstractMessenger.cs" />
+    <Compile Include="Entities\AlterEntities.cs" />
+    <Compile Include="GBKSpell.cs" />
+    <Compile Include="OAuth2Consumer.cs" />
+    <Compile Include="Subscriber.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Entities\Category.cs" />
+    <Compile Include="Entities\CodeItem.cs" />
+    <Compile Include="Entities\FormStep.cs" />
+    <Compile Include="InfoPlusServices.cs" />
+    <Compile Include="Entities\InfoPlusUser.cs" />
+    <Compile Include="ISubscriber.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SJTU.snk" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
