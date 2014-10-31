@@ -7,6 +7,9 @@ using System.Xml;
 using System.Reflection;
 using InfoPlus.ApplicationToolkit.Entities;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
+using System.Net;
 
 namespace InfoPlus.ApplicationToolkit
 {
@@ -16,7 +19,6 @@ namespace InfoPlus.ApplicationToolkit
     /// </summary>
     public class ApplicationSettings : IConfigurationSectionHandler
     {
-
         static object _lock = new object();
 
         public static Random DICE = new Random(DateTime.Now.Millisecond);
@@ -56,6 +58,9 @@ namespace InfoPlus.ApplicationToolkit
                     ep.Identification = serviceId;
                     ep.Address = s.Attributes["address"].Value;
                     SERVICES.Add(ep);
+                    if ((bool)this.parseAttribute<bool>(nodes[0], "trustAllCert", false))
+                        ServicePointManager.ServerCertificateValidationCallback = TrustAllCertHandler;
+
                 }
 
                 // let's choose one.
@@ -75,13 +80,14 @@ namespace InfoPlus.ApplicationToolkit
                     bool requireVerification = (bool)this.parseAttribute<bool>(ms, "requireVerification", true);
                     var code = (string)this.parseAttribute<string>(ms, "code", null);
                     var secret = (string)this.parseAttribute<string>(ms, "secret", null);
+                    var scope = (string)this.parseAttribute<string>(ms, "scope", null);
                     // compatable 2
                     if (string.IsNullOrEmpty(code) && ApplicationSettings.ServiceType != ServiceType.Entitle)
                         throw new ConfigurationErrorsException("workflow code is not set.", ms);
                     InfoPlusApplication app = null;
                     if (null != code)
                     {
-                        app = new InfoPlusApplication(code, secret, _AuthEndPoint);
+                        app = new InfoPlusApplication(code, secret, scope, _AuthEndPoint);
                         ApplicationSettings.workflows[app.FullCode] = app;
                     }
                     foreach (XmlNode m in ms)
@@ -91,9 +97,10 @@ namespace InfoPlus.ApplicationToolkit
                         InfoPlusApplication appOverride = null;
                         var code2 = (string)this.parseAttribute<string>(m, "workflow", null);
                         var secret2 = (string)this.parseAttribute<string>(m, "secret", null);
+                        var scope2 = (string)this.parseAttribute<string>(m, "scope", null);
                         if (false == string.IsNullOrEmpty(code2))
                         {
-                            appOverride = new InfoPlusApplication(code2, secret2, _AuthEndPoint);
+                            appOverride = new InfoPlusApplication(code2, secret2, scope2, _AuthEndPoint);
                             ApplicationSettings.workflows[appOverride.FullCode] = appOverride;
                         }
                         
@@ -135,6 +142,14 @@ namespace InfoPlus.ApplicationToolkit
             }
         }
 
+        static void EnsureSettingsLoaded()
+        {
+            if (null == MESSENGERS)
+                lock (_lock)
+                    if (null == MESSENGERS)
+                        ConfigurationManager.GetSection("infoPlusSettings");
+        }
+
         object parseAttribute<T>(XmlNode node, string attribute, T defaultValue)
         {
             var attr = node.Attributes[attribute];
@@ -167,8 +182,7 @@ namespace InfoPlus.ApplicationToolkit
         {
             get
             {
-                if (null == ApplicationSettings.mashups)
-                    ConfigurationManager.GetSection("infoPlusSettings");
+                EnsureSettingsLoaded();
                 return ApplicationSettings.mashups;
             }
         }
@@ -181,8 +195,7 @@ namespace InfoPlus.ApplicationToolkit
         {
             get
             {
-                //if (null == this.messengers)
-                ConfigurationManager.GetSection("infoPlusSettings");
+                EnsureSettingsLoaded();
                 if (string.IsNullOrEmpty(this.Address) || this.Address == "*")
                     return MESSENGERS;
                 else
@@ -194,14 +207,14 @@ namespace InfoPlus.ApplicationToolkit
 
         public static T GetMessenger<T>() where T : AbstractMessenger
         {
-            ConfigurationManager.GetSection("infoPlusSettings");
+            EnsureSettingsLoaded();
             var x = MESSENGERS.Where(m => m is T).FirstOrDefault();
             return (T)x;
         }
 
         public static AbstractMessenger GetMessenger(Type type)
         {
-            ConfigurationManager.GetSection("infoPlusSettings");
+            EnsureSettingsLoaded();
             var x = MESSENGERS.Where(m => m.GetType() == type).FirstOrDefault();
             return x;
         }
@@ -211,8 +224,7 @@ namespace InfoPlus.ApplicationToolkit
         {
             get
             {
-                if (null == ApplicationSettings.SERVICES) 
-                    ConfigurationManager.GetSection("infoPlusSettings");
+                EnsureSettingsLoaded();
                 return SERVICES;
             }
         }
@@ -222,7 +234,7 @@ namespace InfoPlus.ApplicationToolkit
         {
             get
             {
-                if (null == ApplicationSettings.SERVICE) ConfigurationManager.GetSection("infoPlusSettings");
+                EnsureSettingsLoaded();
                 return ApplicationSettings.SERVICE;
             }
         }
@@ -233,7 +245,7 @@ namespace InfoPlus.ApplicationToolkit
         {
             get
             {
-                if (null == ApplicationSettings._DEFAULT_DOMAIN) ConfigurationManager.GetSection("infoPlusSettings");
+                EnsureSettingsLoaded();
                 return ApplicationSettings._DEFAULT_DOMAIN;
             }
         }
@@ -243,7 +255,7 @@ namespace InfoPlus.ApplicationToolkit
         {
             get
             {
-                if (null == ApplicationSettings._INFOPLUS_MAGIC) ConfigurationManager.GetSection("infoPlusSettings");
+                EnsureSettingsLoaded();
                 return ApplicationSettings._INFOPLUS_MAGIC;
             }
         }
@@ -253,7 +265,7 @@ namespace InfoPlus.ApplicationToolkit
         {
             get
             {
-                if (null == ApplicationSettings._ServiceType) ConfigurationManager.GetSection("infoPlusSettings");
+                EnsureSettingsLoaded();
                 return ApplicationSettings._ServiceType;
             }
         }
@@ -280,7 +292,7 @@ namespace InfoPlus.ApplicationToolkit
             {
                 if (false == workflows.Any())
                 {
-                    ConfigurationManager.GetSection("infoPlusSettings");
+                    EnsureSettingsLoaded();
                     if (false == workflows.Any())
                         throw new ConfigurationErrorsException("no workflow found.");
                 }
@@ -379,6 +391,12 @@ namespace InfoPlus.ApplicationToolkit
             }
             var dt = new System.DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(System.BitConverter.ToInt32(b, System.BitConverter.ToInt32(b, peHeaderOffset) + linkerTimestampOffset));
             return dt.AddHours(System.TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours);
+        }
+
+        static bool TrustAllCertHandler(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors error)
+        {
+            // Ignore errors
+            return true;
         }
 
     }

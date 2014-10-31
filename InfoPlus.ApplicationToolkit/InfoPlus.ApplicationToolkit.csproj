@@ -55,6 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationSettings.cs" />
+    <Compile Include="Entities\ApiObject.cs" />
+    <Compile Include="Entities\ApiUser.cs" />
     <Compile Include="Entities\CodeList.cs" />
     <Compile Include="Entities\CodeSuggestion.cs" />
     <Compile Include="Entities\InfoPlusApplication.cs" />

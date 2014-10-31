@@ -28,6 +28,8 @@ namespace InfoPlus.ApplicationToolkit
         public static readonly string METHOD_CANDO = "ListCanDoTemplates";
         public static readonly string METHOD_TODO = "ListFormStepSummaries";
 
+        public static readonly string METHOD_POSITION_USERS = "ListDeptPostUsers";
+
         public static readonly string RESOURCE_IDENTIFIER = "_id_";
 
         public static IDictionary<string, string> METHODS_MAP = new Dictionary<string, string>()
@@ -40,7 +42,9 @@ namespace InfoPlus.ApplicationToolkit
             { "QueryFormData", "GET process/{0}/data" },
 
             { "ListCanDoTemplates", "GET me/apps" },
-            { "ListFormStepSummaries", "GET me/tasks/{0}" }
+            { InfoPlusServices.METHOD_TODO, "GET me/tasks/{0}" },
+
+            { InfoPlusServices.METHOD_POSITION_USERS, "GET position/{0}/users" }
 
         };
 
@@ -237,5 +241,25 @@ namespace InfoPlus.ApplicationToolkit
 
         #endregion
 
+
+        /// <summary>
+        /// 枚举
+        /// </summary>
+        public static IList<InfoPlusUser> ListDeptPostUsers(string workflow, string dept, string post)
+        {
+            string method = InfoPlusServices.METHOD_POSITION_USERS;
+            var nvc = new List<KeyValuePair<string, object>>();
+            nvc.Add(new KeyValuePair<string, object>(InfoPlusServices.RESOURCE_IDENTIFIER, dept + ":" + post));
+            IList<ApiUser> users = ApplicationSettings.FindApp(workflow).Invoke<ApiUser>(method, nvc);
+            return InfoPlusServices.Convert(users);
+        }
+
+        static IList<InfoPlusUser> Convert(IList<ApiUser> users)
+        {
+            var list = new List<InfoPlusUser>();
+            foreach (var user in users)
+                list.Add(new InfoPlusUser() { Account = user.Account, TrueName = user.Name });
+            return list;
+        }
     }
 }

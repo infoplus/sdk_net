@@ -13,14 +13,17 @@ namespace InfoPlus.ApplicationToolkit.Entities
 {
     public class InfoPlusApplication
     {
+        public string Secret { get; set; }
+        public string Scope { get; set; }
 
-        public InfoPlusApplication(string code, string secret, string authUri)
+        public InfoPlusApplication(string code, string secret, string scope, string authUri)
         {
             if(false == code.Contains("@"))
                 code = code + "@" + ApplicationSettings.DefaultDomain;
 
             this.fullCode = code;
             this.Secret = secret;
+            this.Scope = scope;
 
             if (false == string.IsNullOrEmpty(authUri))
             {
@@ -53,8 +56,6 @@ namespace InfoPlus.ApplicationToolkit.Entities
             }
         }
 
-        public string Secret { get; set; }
-
         /// <summary>
         /// HA1=MD5(username:realm:password)
         /// HA2=MD5(method:digestURI)
@@ -69,10 +70,9 @@ namespace InfoPlus.ApplicationToolkit.Entities
         }
 
         OAuth2Consumer OAuth2 { get; set; }
-
         static object token_lock = new object();
-
         AccessTokenV2 _accessToken;
+        private string _AuthEndPoint;
         AccessTokenV2 AccessToken
         {
             get
@@ -84,8 +84,8 @@ namespace InfoPlus.ApplicationToolkit.Entities
                     {
                         if (null == _accessToken || then > _accessToken.expires_in - 10)
                         {
-                            if (null == _accessToken)
-                                _accessToken = this.OAuth2.GrantByClientCredentials(string.Empty);
+                            if (null == _accessToken || null == _accessToken.refresh_token)
+                                _accessToken = this.OAuth2.GrantByClientCredentials(this.Scope);
                             else
                                 _accessToken = this.OAuth2.GrantByRefreshToken(_accessToken.refresh_token);
 
@@ -122,7 +122,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
                     if (res.Contains("{0}"))
                     {
                         var id = arguments.FirstOrDefault(a => a.Key == InfoPlusServices.RESOURCE_IDENTIFIER);
-                        res = string.Format(res, id);
+                        res = string.Format(res, id.Value);
                     }
                     NameValueCollection nvc = new NameValueCollection();
                     foreach (var pair in arguments)
