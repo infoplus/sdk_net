@@ -156,21 +156,25 @@ namespace InfoPlus.ApplicationToolkit
         /// </summary>
         ResponseEntity CheckParameters(AbstractMessenger messenger, string verify, string version, params object[] args)
         {
-            string log = "[Subscriber][OnEvent][";
+            string log = "[Subscriber][OnEvent]";
             bool valid = false;
             string details = string.Empty;
 
             try
             {
+                
+                /*
                 try
                 {
                     System.Diagnostics.StackTrace stack = new System.Diagnostics.StackTrace();
+                    log += "[";
                     log += (stack.FrameCount > 1 ? stack.GetFrame(1).GetMethod().Name : "Unknown Method");
                     log += "]Called with parameters:";
                     log += string.Format("version:{0},apikey:{1},args:{2}", version, verify,
                         string.Join(",", args.Select(a => (null == a) ? "null" : a.ToString()).ToArray()));
                 }
                 catch { }
+                */
 
                 switch (ApplicationSettings.ServiceType)
                 {
@@ -226,6 +230,8 @@ namespace InfoPlus.ApplicationToolkit
                                 }
                             }
                         }
+                        // We calcuate use UTF-8 encoding, 
+                        // however it's a shortcoming that RFC didn't defines the encoding for Http Basic Auth Digest.
                         var expect = messenger.Workflow.CalculateDigest(method, uri1, nonce);
                         valid = expect.Equals(verify, StringComparison.CurrentCultureIgnoreCase);
                         if (valid)

@@ -64,9 +64,9 @@ namespace InfoPlus.ApplicationToolkit.Entities
         /// <returns></returns>
         public string CalculateDigest(string method, string digestURI, string nonce) 
         {
-            string ha1 = ApplicationSettings.CalculateMD5Hash(Code + ":" + Domain + ":" + Secret);
-            string ha2 = ApplicationSettings.CalculateMD5Hash(method + ":" + digestURI);
-            return ApplicationSettings.CalculateMD5Hash(ha1 + ":" + nonce + ":" + ha2);
+            string ha1 = ApplicationSettings.CalculateMD5Hash(Code + ":" + Domain + ":" + Secret, Encoding.ASCII);
+            string ha2 = ApplicationSettings.CalculateMD5Hash(method + ":" + digestURI, Encoding.ASCII);
+            return ApplicationSettings.CalculateMD5Hash(ha1 + ":" + nonce + ":" + ha2, Encoding.ASCII);
         }
 
         OAuth2Consumer OAuth2 { get; set; }

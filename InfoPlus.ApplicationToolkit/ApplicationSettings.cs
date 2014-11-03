@@ -299,13 +299,16 @@ namespace InfoPlus.ApplicationToolkit
                 return workflows;
             }
         }
-            
-            
 
 
         public static string CalculateMD5Hash(string input)
         {
-            byte[] x = System.Text.Encoding.Unicode.GetBytes(input);
+            return ApplicationSettings.CalculateMD5Hash(input, System.Text.Encoding.UTF8);
+        }
+
+        public static string CalculateMD5Hash(string input, System.Text.Encoding encoding)
+        {
+            byte[] x = encoding.GetBytes(input);
             byte[] y = md5.ComputeHash(x);
             string result = SJTU.SJTURight.ApplicationToolkit.HexEncoding.ToString(y);
             return result.ToLower();
