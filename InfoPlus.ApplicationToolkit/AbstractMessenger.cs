@@ -119,7 +119,7 @@ namespace InfoPlus.ApplicationToolkit
                     {
                         if (false == cl.ContainsKey(code) || ce[code] < UnixTime.ToInt64(DateTime.Now))
                         {
-                            CodeList list = this.OnQueryCodeTable(code, e);
+                            CodeList list = this.OnQueryCodeTable(code);
                             if (null == list || null == list.Items || 0 == list.Items.Count)
                             {
                                 throw new Exception("CodeTable " + code + " invalid.");
@@ -165,11 +165,6 @@ namespace InfoPlus.ApplicationToolkit
                     AbstractMessenger.cachedCodeExpires.Remove(code);
                 }
             }
-        }
-
-        protected virtual CodeList OnQueryCodeTable(string code, InfoPlusEvent e)
-        {
-            return this.OnQueryCodeTable(code, e);
         }
 
         protected virtual CodeList OnQueryCodeTable(string code)
@@ -397,7 +392,7 @@ namespace InfoPlus.ApplicationToolkit
         static IDictionary<string, long> cachedCodeExpires = new ConcurrentDictionary<string, long>();
         static object _code_lock = new object();
 
-        CodeList Suggest(CodeSuggestion suggestion)
+        protected CodeList Suggest(CodeSuggestion suggestion)
         {
             CodeList codes = AbstractMessenger.cachedCodeLists[suggestion.Code];
             if(null == codes)
