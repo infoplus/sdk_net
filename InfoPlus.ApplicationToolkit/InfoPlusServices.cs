@@ -35,16 +35,16 @@ namespace InfoPlus.ApplicationToolkit
         public static IDictionary<string, string> METHODS_MAP = new Dictionary<string, string>()
         {
             { "Start", "PUT process" },
-            { "ListWorkflowFields", "GET app/{0}/fields" },
+            { "ListWorkflowFields", "GET v1/app/{0}/fields" },
 
-            { "Alter", "POST process/{0}" },
-            { "DoAction", "POST task/{0}/submit" },
-            { "QueryFormData", "GET process/{0}/data" },
+            { "Alter", "POST v1/process/{0}" },
+            { "DoAction", "POST v2/task/{0}/submit" },
+            { "QueryFormData", "GET v1/process/{0}/data" },
 
-            { "ListCanDoTemplates", "GET me/apps" },
-            { InfoPlusServices.METHOD_TODO, "GET me/tasks/{0}" },
+            { "ListCanDoTemplates", "GET v2/me/apps" },
+            { InfoPlusServices.METHOD_TODO, "GET v2/me/tasks/{0}" },
 
-            { InfoPlusServices.METHOD_POSITION_USERS, "GET position/{0}/users" }
+            { InfoPlusServices.METHOD_POSITION_USERS, "GET v2/position/{0}/users" }
 
         };
 
