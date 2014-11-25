@@ -13,8 +13,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
         public string Uri { get; set; }
         public string Kind { get; set; }
         public long Size { get; set; }
-        public long Mime { get; set; }
-
+        public string Mime { get; set; }
 
         /// <summary>
         /// Parse json object.

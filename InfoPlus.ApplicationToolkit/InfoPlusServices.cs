@@ -34,7 +34,7 @@ namespace InfoPlus.ApplicationToolkit
 
         public static IDictionary<string, string> METHODS_MAP = new Dictionary<string, string>()
         {
-            { "Start", "PUT process" },
+            { "Start", "PUT v2/process" },
             { "ListWorkflowFields", "GET v1/app/{0}/fields" },
 
             { "Alter", "POST v1/process/{0}" },
