@@ -233,8 +233,8 @@ namespace Studio.OAuth2
             string result;
             // Create The Http Request
             var request = (HttpWebRequest)WebRequest.Create(endPoint);
-
-            //request.Proxy = new WebProxy("127.0.0.1", 8888);
+            request.ServicePoint.Expect100Continue = false;
+            // request.Proxy = new WebProxy("127.0.0.1", 8888);
             request.Method = method;
             BuildHeaders(request, headers);
                 

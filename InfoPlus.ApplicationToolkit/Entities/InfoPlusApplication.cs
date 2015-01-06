@@ -69,11 +69,13 @@ namespace InfoPlus.ApplicationToolkit.Entities
             return ApplicationSettings.CalculateMD5Hash(ha1 + ":" + nonce + ":" + ha2, Encoding.ASCII);
         }
 
-        OAuth2Consumer OAuth2 { get; set; }
+        public OAuth2Consumer OAuth2 { get; set; }
+
         static object token_lock = new object();
         AccessTokenV2 _accessToken;
         private string _AuthEndPoint;
-        AccessTokenV2 AccessToken
+        
+        public AccessTokenV2 AccessToken
         {
             get
             {

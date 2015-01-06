@@ -30,7 +30,9 @@ namespace InfoPlus.ApplicationToolkit.Entities
         INSTANCE_EXPIRING = 0x01 << 18,
         INSTANCE_EXPIRED = 0x01 << 19,
         INSTANCE_KILLING = 0x01 << 20,
-        INSTANCE_KILLED = 0x01 << 21
+        INSTANCE_KILLED = 0x01 << 21,
+
+        INSTANCE_COMPENSATION = 0x01 << 22
 
     }
 }

@@ -67,7 +67,6 @@ namespace InfoPlus.ApplicationToolkit
                 throw new Exception("INVALID_APP");
         }
 
-
         #region Form Templates APIs : Templates, Fields, Preview
 
         /// <summary>
@@ -243,7 +242,7 @@ namespace InfoPlus.ApplicationToolkit
 
 
         /// <summary>
-        /// 枚举
+        /// 
         /// </summary>
         public static IList<InfoPlusUser> ListDeptPostUsers(string workflow, string dept, string post)
         {
