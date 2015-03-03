@@ -65,8 +65,8 @@ namespace InfoPlus.ApplicationToolkit.Entities
                 {
                     en.InstanceId = e.Step.Instance.InstanceId;
                     en.BusinessId = e.Step.Instance.BusinessId;
-                    if(null != e.Step.Instance.Owner)
-                        en.InstanceOwner = e.Step.Instance.Owner.Account;
+                    if(null != e.Step.Instance.Creator)
+                        en.InstanceOwner = e.Step.Instance.Creator.Account;
                 }
 
                 // en.workflowOperator = e.User;
