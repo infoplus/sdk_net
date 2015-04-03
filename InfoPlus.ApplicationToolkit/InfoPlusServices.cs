@@ -48,6 +48,22 @@ namespace InfoPlus.ApplicationToolkit
 
         };
 
+        public static IDictionary<string, string> METHODS_MAP_DEBUG = new Dictionary<string, string>()
+        {
+            { "Start", "PUT v2d/process" },
+            { "ListWorkflowFields", "GET v1/app/{0}/fields" },
+
+            { "Alter", "POST v1/process/{0}" },
+            { "DoAction", "POST v2d/task/{0}/submit" },
+            { "QueryFormData", "GET v1/process/{0}/data" },
+
+            { "ListCanDoTemplates", "GET v2d/me/apps" },
+            { InfoPlusServices.METHOD_TODO, "GET v2d/me/tasks/{0}" },
+
+            { InfoPlusServices.METHOD_POSITION_USERS, "GET v2d/position/{0}/users" }
+
+        };
+
         public InfoPlusApplication App { get; set; }
 
         /// <summary>
@@ -130,6 +146,22 @@ namespace InfoPlus.ApplicationToolkit
             nvc.Add(new KeyValuePair<string, object>(InfoPlusServices.RESOURCE_IDENTIFIER, workflowCode));
             nvc.Add(new KeyValuePair<string, object>("initialData", initialData));
             return ApplicationSettings.FindApp(workflowCode).Invoke<string>(method, nvc);
+        }
+
+        public static ResponseEntity<string> StartV2(string userId, string assignTo, string businessId, 
+            long? secureURIExpire, string code, string data)
+        {
+            string method = InfoPlusServices.METHOD_START;
+            var nvc = new List<KeyValuePair<string, object>>();
+            nvc.Add(new KeyValuePair<string, object>("userId", userId));
+            nvc.Add(new KeyValuePair<string, object>("assignTo", assignTo));
+            nvc.Add(new KeyValuePair<string, object>("businessId", businessId));
+            nvc.Add(new KeyValuePair<string, object>("code", code));
+            nvc.Add(new KeyValuePair<string, object>("data", data));
+            if (null != secureURIExpire) {
+                nvc.Add(new KeyValuePair<string, object>("secureURIExpire", secureURIExpire.Value));
+            }
+            return ApplicationSettings.FindApp(code).Invoke<string>(method, nvc);
         }
 
         #endregion

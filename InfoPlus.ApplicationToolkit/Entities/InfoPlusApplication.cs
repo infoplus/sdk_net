@@ -15,8 +15,9 @@ namespace InfoPlus.ApplicationToolkit.Entities
     {
         public string Secret { get; set; }
         public string Scope { get; set; }
+        public bool Release { get; set; }
 
-        public InfoPlusApplication(string code, string secret, string scope, string authUri)
+        public InfoPlusApplication(string code, string secret, string scope, string authUri, bool release)
         {
             if(false == code.Contains("@"))
                 code = code + "@" + ApplicationSettings.DefaultDomain;
@@ -24,6 +25,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
             this.fullCode = code;
             this.Secret = secret;
             this.Scope = scope;
+            this.Release = release;
 
             if (false == string.IsNullOrEmpty(authUri))
             {
@@ -114,7 +116,8 @@ namespace InfoPlus.ApplicationToolkit.Entities
                     result = EntitleServices.InvokeApplicationService(serviceId, endPoint, method, args);
                     break;
                 case ServiceType.OAuth2:
-                    if (false == InfoPlusServices.METHODS_MAP.ContainsKey(method))
+                    var map = this.Release ? InfoPlusServices.METHODS_MAP : InfoPlusServices.METHODS_MAP_DEBUG;
+                    if (false == map.ContainsKey(method))
                         throw new NotSupportedException(method);
                     method = InfoPlusServices.METHODS_MAP[method];
                     var token = this.AccessToken;

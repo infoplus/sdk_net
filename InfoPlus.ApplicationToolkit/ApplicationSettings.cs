@@ -23,8 +23,6 @@ namespace InfoPlus.ApplicationToolkit
 
         public static Random DICE = new Random(DateTime.Now.Millisecond);
 
-        static MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-
         public static readonly string SESSION_KEY_ACCOUNT = "Account";
 
         public object Create(object parent, object configContext, XmlNode section)
@@ -81,13 +79,14 @@ namespace InfoPlus.ApplicationToolkit
                     var code = (string)this.parseAttribute<string>(ms, "code", null);
                     var secret = (string)this.parseAttribute<string>(ms, "secret", null);
                     var scope = (string)this.parseAttribute<string>(ms, "scope", null);
+                    var release = (bool)this.parseAttribute<bool>(ms, "release", true);
                     // compatable 2
                     if (string.IsNullOrEmpty(code) && ApplicationSettings.ServiceType != ServiceType.Entitle)
                         throw new ConfigurationErrorsException("workflow code is not set.", ms);
                     InfoPlusApplication app = null;
                     if (null != code)
                     {
-                        app = new InfoPlusApplication(code, secret, scope, _AuthEndPoint);
+                        app = new InfoPlusApplication(code, secret, scope, _AuthEndPoint, release);
                         ApplicationSettings.workflows[app.FullCode] = app;
                     }
                     foreach (XmlNode m in ms)
@@ -98,9 +97,10 @@ namespace InfoPlus.ApplicationToolkit
                         var code2 = (string)this.parseAttribute<string>(m, "workflow", null);
                         var secret2 = (string)this.parseAttribute<string>(m, "secret", null);
                         var scope2 = (string)this.parseAttribute<string>(m, "scope", null);
+                        var release2 = (bool)this.parseAttribute<bool>(m, "release", true);
                         if (false == string.IsNullOrEmpty(code2))
                         {
-                            appOverride = new InfoPlusApplication(code2, secret2, scope2, _AuthEndPoint);
+                            appOverride = new InfoPlusApplication(code2, secret2, scope2, _AuthEndPoint, release2);
                             ApplicationSettings.workflows[appOverride.FullCode] = appOverride;
                         }
                         
@@ -309,7 +309,7 @@ namespace InfoPlus.ApplicationToolkit
         public static string CalculateMD5Hash(string input, System.Text.Encoding encoding)
         {
             byte[] x = encoding.GetBytes(input);
-            byte[] y = md5.ComputeHash(x);
+            byte[] y = new MD5CryptoServiceProvider().ComputeHash(x);
             string result = SJTU.SJTURight.ApplicationToolkit.HexEncoding.ToString(y);
             return result.ToLower();
         }

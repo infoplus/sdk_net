@@ -188,7 +188,7 @@ namespace Studio.OAuth2
 
             var headers = new Dictionary<HttpRequestHeader, string>();
             headers.Add(HttpRequestHeader.Authorization, "Bearer " + accessToken);
-            headers.Add(HttpRequestHeader.ContentType, ContentTypeJSON);
+            headers.Add(HttpRequestHeader.ContentType, ContentTypeForm);
             return OAuth2Consumer.HttpRequest(endPoint, verb, data, headers);
         }
 

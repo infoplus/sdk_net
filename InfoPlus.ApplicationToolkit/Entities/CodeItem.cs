@@ -24,7 +24,8 @@ namespace InfoPlus.ApplicationToolkit.Entities
         public string Description { get; set; }
         public string ParentId { get; set; }
         public bool IsEnabled { get; set; }
-        
+        public IList<string> CodeIndexes { get; set; }
+
         // used for cache spell
         private string spell = string.Empty;
         public string Spell 
@@ -53,7 +54,11 @@ namespace InfoPlus.ApplicationToolkit.Entities
 
             if (false == string.IsNullOrEmpty(this.Description))
             {
-                IList<string> parts = this.Description.Split(new[] { '|' });
+                var parts = this.Description.Split(new[] { '|' });
+                if (null != this.CodeIndexes)
+                {
+                    parts = parts.Union(this.CodeIndexes).ToArray();
+                }
                 foreach (var part in parts)
                 {
                     // string fullSpell = GBKSpell.GetFullSpell(part);

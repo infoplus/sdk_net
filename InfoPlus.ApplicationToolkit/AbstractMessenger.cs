@@ -401,7 +401,7 @@ namespace InfoPlus.ApplicationToolkit
                 throw new Exception("CodeTable invalid.");
 
             var parent = suggestion.Parent;
-            var isTopLevel = suggestion.IsTopLevel;
+            var isTopLevel = suggestion.TopLevel;
             var prefix = suggestion.Prefix;
             var pageSize = suggestion.PageSize;
             if (pageSize <= 0)

@@ -10,7 +10,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
         public string Prefix { get; set; }
 
         public string Parent { get; set; }
-        public bool IsTopLevel { get; set; }
+        public bool TopLevel { get; set; }
 
         /// <summary>
         /// Code TableName
