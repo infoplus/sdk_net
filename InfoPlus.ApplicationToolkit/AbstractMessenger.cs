@@ -89,6 +89,7 @@ namespace InfoPlus.ApplicationToolkit
         public virtual InfoPlusResponse OnActionSaving(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnActionSaved(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnFieldChanging(InfoPlusEvent e) { return this.Update(e); }
+        
         /* 
          * The following event are divided.
         public virtual InfoPlusResponse OnActionDoing(InfoPlusEvent e) { return this.Update(e); }
@@ -410,11 +411,7 @@ namespace InfoPlus.ApplicationToolkit
             codes = new CodeList { Items = new List<CodeItem>(codes.Items), Name = codes.Name };
             if (false == string.IsNullOrEmpty(parent) || false == isTopLevel)
             {
-                var filtered = from c in codes.Items
-                               // Notice: NULL is considered "the same as" string.Empty
-                               where c.ParentId == parent || string.IsNullOrEmpty(parent + c.ParentId)
-                               select c;
-                codes = new CodeList {Items = filtered.ToList(), Name = codes.Name};
+                codes = codes.Filter(parent);
             }
 
             if (prefix.Length == 0)

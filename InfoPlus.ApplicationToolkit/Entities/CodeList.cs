@@ -18,7 +18,19 @@ namespace InfoPlus.ApplicationToolkit.Entities
         public CodeTypes CodeType { get; set; }
         public IList<CodeItem> Items { get; set; }
         public DateTime Expire { get; set; }
+
+        public virtual CodeList Filter(string filter)
+        {
+            var filtered = from c in this.Items
+                           // Notice: NULL is considered "the same as" string.Empty
+                           where c.ParentId == filter || string.IsNullOrEmpty(filter + c.ParentId)
+                           select c;
+            return new CodeList { Items = filtered.ToList(), Name = this.Name };
+        }
+    
     }
+
+
 
     public enum CodeTypes
     {
