@@ -30,6 +30,8 @@ namespace InfoPlus.ApplicationToolkit
 
         public static readonly string METHOD_POSITION_USERS = "ListDeptPostUsers";
 
+        public static readonly string METHOD_USER_POSITIONS = "_V2_ONLY_USER_POSITIONS";
+
         public static readonly string RESOURCE_IDENTIFIER = "_id_";
 
         public static IDictionary<string, string> METHODS_MAP = new Dictionary<string, string>()
@@ -44,8 +46,8 @@ namespace InfoPlus.ApplicationToolkit
             { "ListCanDoTemplates", "GET v2/me/apps" },
             { InfoPlusServices.METHOD_TODO, "GET v2/me/tasks/{0}" },
 
-            { InfoPlusServices.METHOD_POSITION_USERS, "GET v2/position/{0}/users" }
-
+            { InfoPlusServices.METHOD_POSITION_USERS, "GET v2/position/{0}/users" },
+            { InfoPlusServices.METHOD_USER_POSITIONS, "GET v2/user/{0}/positions" }
         };
 
         public static IDictionary<string, string> METHODS_MAP_DEBUG = new Dictionary<string, string>()
@@ -60,7 +62,8 @@ namespace InfoPlus.ApplicationToolkit
             { "ListCanDoTemplates", "GET v2d/me/apps" },
             { InfoPlusServices.METHOD_TODO, "GET v2d/me/tasks/{0}" },
 
-            { InfoPlusServices.METHOD_POSITION_USERS, "GET v2d/position/{0}/users" }
+            { InfoPlusServices.METHOD_POSITION_USERS, "GET v2d/position/{0}/users" },
+            { InfoPlusServices.METHOD_USER_POSITIONS, "GET v2d/user/{0}/positions" }
 
         };
 
@@ -283,6 +286,15 @@ namespace InfoPlus.ApplicationToolkit
             nvc.Add(new KeyValuePair<string, object>(InfoPlusServices.RESOURCE_IDENTIFIER, dept + ":" + post));
             IList<ApiUser> users = ApplicationSettings.FindApp(workflow).Invoke<ApiUser>(method, nvc);
             return InfoPlusServices.Convert(users);
+        }
+
+        public static IList<ApiPosition> ListUserPositions(string workflow, string userId)
+        {
+            string method = InfoPlusServices.METHOD_USER_POSITIONS;
+            var nvc = new List<KeyValuePair<string, object>>();
+            nvc.Add(new KeyValuePair<string, object>(InfoPlusServices.RESOURCE_IDENTIFIER, userId));
+            IList<ApiPosition> positions = ApplicationSettings.FindApp(workflow).Invoke<ApiPosition>(method, nvc);
+            return positions;
         }
 
         static IList<InfoPlusUser> Convert(IList<ApiUser> users)
