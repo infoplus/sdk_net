@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections;
 using System.Reflection;
 using Studio.Foundation.Json;
+using Studio.Foundation.Json.Core.Conversion;
 
 namespace InfoPlus.ApplicationToolkit.Entities
 {
@@ -12,7 +13,9 @@ namespace InfoPlus.ApplicationToolkit.Entities
     {
         static readonly string FIELD_PREFIX = "field";
         static readonly string GROUP_PREFIX = "group";
-        public static readonly string FIELD_SUFFIX = "_Name";
+        public static readonly string FIELD_SUFFIX_NAME = "_Name";
+        public static readonly string FIELD_SUFFIX_ATTR = "_Attr";
+
 
         /// <summary>
         /// Instance Id for the current Instance
@@ -267,9 +270,9 @@ namespace InfoPlus.ApplicationToolkit.Entities
         {
             field = property = key;
             if (null == key) return false;
-            bool isName = key.EndsWith(InfoPlusEntity.FIELD_SUFFIX);
+            bool isName = key.EndsWith(InfoPlusEntity.FIELD_SUFFIX_NAME);
             if (isName)
-                field = key.Substring(0, key.Length - InfoPlusEntity.FIELD_SUFFIX.Length);
+                field = key.Substring(0, key.Length - InfoPlusEntity.FIELD_SUFFIX_NAME.Length);
 
             property = field;
             if (field.StartsWith(InfoPlusEntity.FIELD_PREFIX) && key.Length > InfoPlusEntity.FIELD_PREFIX.Length)
@@ -483,12 +486,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
                                 var groupFields = deepers.Where(f => f.GroupName == groupName);
                                 foreach (var field in groupFields)
                                 {
-                                    // if (field.RepeatDepth == min)
                                     InfoPlusEntity.FormDataAssign(field.Name, new Array[0], data, dataPath);
-                                    if(field.Type == FormField.TYPE_CODE || 
-                                        field.Type == FormField.TYPE_USER ||
-                                        field.Type == FormField.TYPE_ORGANIZE)
-                                        InfoPlusEntity.FormDataAssign(field.Name + FIELD_SUFFIX, new Array[0], data, dataPath);
                                 }
                             }
                             
@@ -503,9 +501,10 @@ namespace InfoPlus.ApplicationToolkit.Entities
             }
         }
 
-        static object DecodeValue(object val, out string name)
+        static object DecodeValue(object val, out string name, out string attr)
         {
             name = null;
+            attr = null;
             if (null != val)
             {
                 Type type = val.GetType();
@@ -516,13 +515,16 @@ namespace InfoPlus.ApplicationToolkit.Entities
                     {
                         var property = type.GetProperty("Value");
                         var realVal = property.GetValue(val, null);
-                        return DecodeValue(realVal, out name);
+                        return DecodeValue(realVal, out name, out attr);
                     }
                 }
                 if (val is CodeItem)
                 {
-                    name = (val as CodeItem).CodeName;
-                    val = (val as CodeItem).CodeId;
+                    var entity = val as CodeItem;
+                    name = entity.CodeName;
+                    if (null != entity.Attributes && entity.Attributes.Count > 0)
+                        attr = JsonConvert.ExportToString(entity.Attributes);
+                    val = entity.CodeId;
                 }
                 if (val is InfoPlusUser)
                 {
@@ -534,6 +536,15 @@ namespace InfoPlus.ApplicationToolkit.Entities
             return val;
         }
 
+        
+        /// <summary>
+        /// Assign key, key_Name & key_Attr
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="val"></param>
+        /// <param name="data"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
         static bool FormDataAssign(string key, object val, IDictionary<string, object> data, string path)
         {
             if (string.IsNullOrEmpty(key) || null == data)
@@ -545,10 +556,14 @@ namespace InfoPlus.ApplicationToolkit.Entities
                 splits = path.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
 
             string name;
-            val = InfoPlusEntity.DecodeValue(val, out name);
+            string attr;
+            val = InfoPlusEntity.DecodeValue(val, out name, out attr);
             // Save name too.
             if (null != name)
-                FormDataAssign(key + FIELD_SUFFIX, name, data, path);
+                FormDataAssign(key + FIELD_SUFFIX_NAME, name, data, path);
+            if (null != attr) 
+                FormDataAssign(key + FIELD_SUFFIX_ATTR, attr, data, path);
+                
 
             if(null == splits || 0 == splits.Length)
             {
