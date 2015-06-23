@@ -142,19 +142,23 @@ namespace Studio.OAuth2
         public AccessTokenV2 Token(GrantTypes type, NameValueCollection nvc)
         {
             string result = null;
+            var error = "unknown";
             try
             {
-                var hvc = HttpUtility.ParseQueryString(string.Empty);
-                foreach (string key in nvc.Keys) hvc.Add(key, nvc[key]);
-                var query = "grant_type=" + type + "&" + hvc.ToString();
+                // var hvc = HttpUtility.ParseQueryString(string.Empty);
+                // foreach (string key in nvc.Keys) hvc.Add(key, nvc[key]);
+                /// var query = "grant_type=" + type + "&" + hvc.ToString();
+                var query = String.Join("&", nvc.AllKeys.Select(a => a + "=" + HttpUtility.UrlEncode(nvc[a])));
+                query = "grant_type=" + type + "&" + query;
                 result = this.HttpPostBasicAuth(this.Settings.EndPointToken, query);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                error = ex.Message;
             }
             if (null == result) 
-                return new AccessTokenV2() { error = "unknown" };
+                return new AccessTokenV2() { error = error };
 
             AccessTokenV2 token = new AccessTokenV2();
             // Homebrew Json deserialization, made in China, by marstone
@@ -182,9 +186,14 @@ namespace Studio.OAuth2
 
         public string RestRequest(string endPoint, string verb, string accessToken, NameValueCollection nvc)
         {
-            var hvc = HttpUtility.ParseQueryString(string.Empty);
-            foreach (string key in nvc.Keys) hvc.Add(key, nvc[key]);
-            var data = Encoding.UTF8.GetBytes(hvc.ToString());
+            // var hvc = HttpUtility.ParseQueryString(string.Empty);
+            // foreach (string key in nvc.Keys) hvc.Add(key, nvc[key]);
+            // var data = Encoding.UTF8.GetBytes(hvc.ToString());
+            // look at: http://stackoverflow.com/questions/829080/how-to-build-a-query-string-for-a-url-in-c
+            // http://stackoverflow.com/questions/3865975/namevaluecollection-to-url-query
+
+            var query = String.Join("&", nvc.AllKeys.Select(a => a + "=" + HttpUtility.UrlEncode(nvc[a])));
+            var data = Encoding.UTF8.GetBytes(query);
 
             var headers = new Dictionary<HttpRequestHeader, string>();
             headers.Add(HttpRequestHeader.Authorization, "Bearer " + accessToken);
