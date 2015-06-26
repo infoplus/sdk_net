@@ -119,7 +119,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
                     var map = this.Release ? InfoPlusServices.METHODS_MAP : InfoPlusServices.METHODS_MAP_DEBUG;
                     if (false == map.ContainsKey(method))
                         throw new NotSupportedException(method);
-                    method = InfoPlusServices.METHODS_MAP[method];
+                    method = map[method];
                     var token = this.AccessToken;
                     var index = method.IndexOf(' ');
                     var verb = method.Substring(0, index);
