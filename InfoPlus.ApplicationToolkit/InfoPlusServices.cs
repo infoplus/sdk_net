@@ -40,7 +40,7 @@ namespace InfoPlus.ApplicationToolkit
             { "ListWorkflowFields", "GET v1/app/{0}/fields" },
 
             { "Alter", "POST v1/process/{0}" },
-            { "DoAction", "POST v2/task/{0}/submit" },
+            { "DoAction", "POST v2/task/{0}" },
             { "QueryFormData", "GET v1/process/{0}/data" },
 
             { "ListCanDoTemplates", "GET v2/me/apps" },
@@ -56,7 +56,7 @@ namespace InfoPlus.ApplicationToolkit
             { "ListWorkflowFields", "GET v1/app/{0}/fields" },
 
             { "Alter", "POST v1/process/{0}" },
-            { "DoAction", "POST v2d/task/{0}/submit" },
+            { "DoAction", "POST v2d/task/{0}" },
             { "QueryFormData", "GET v1/process/{0}/data" },
 
             { "ListCanDoTemplates", "GET v2d/me/apps" },
@@ -268,8 +268,9 @@ namespace InfoPlus.ApplicationToolkit
             nvc.Add(new KeyValuePair<string, object>("stepCode", stepCode));
             nvc.Add(new KeyValuePair<string, object>("actionCode", actionCode));
             var users = null == stepUsers ? string.Empty : JsonConvert.ExportToString(stepUsers);
-            nvc.Add(new KeyValuePair<string, object>("users", users));
-            nvc.Add(new KeyValuePair<string, object>("comment", comment ?? string.Empty));
+            // nvc.Add(new KeyValuePair<string, object>("nextSteps", nextSteps));
+            // nvc.Add(new KeyValuePair<string, object>("nextUsers", nextUsers));
+            nvc.Add(new KeyValuePair<string, object>("remark", comment ?? string.Empty));
             return ApplicationSettings.FindValidApp().Invoke<FormStep>(method, nvc);
         }
 

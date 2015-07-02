@@ -50,6 +50,19 @@ namespace InfoPlus.ApplicationToolkit.Entities
         /// </summary>
         public string Prompt { get; set; }
 
+        /// <summary>
+        /// for Expiration.
+        /// 0: do nothing
+        /// -1: kill
+        /// positive: seconds to extend.
+        /// </summary>
+        public long Then { get; set; }
+
+        /// <summary>
+        /// Then, after Expiration, submit an Action
+        /// </summary>
+        public long ThenAction { get; set; }
+
 
         /// <summary>
         /// Detail will contain exception infomation
