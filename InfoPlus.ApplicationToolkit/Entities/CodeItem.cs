@@ -24,6 +24,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
         public string Description { get; set; }
         public string ParentId { get; set; }
         public bool IsEnabled { get; set; }
+        public int ItemIndex { get; set; }
         public IList<string> CodeIndexes { get; set; }
 
         // used for cache spell

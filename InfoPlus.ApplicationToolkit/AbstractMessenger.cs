@@ -418,7 +418,7 @@ namespace InfoPlus.ApplicationToolkit
             {
                 var x = (from c in codes.Items
                          where c.IsEnabled
-                         orderby c.CodeName ascending
+                         orderby c.ItemIndex, c.CodeName ascending
                          select c);
                 codes.Items = x.Skip(pageSize * suggestion.PageNo).Take(pageSize).ToArray();
             }
@@ -427,7 +427,7 @@ namespace InfoPlus.ApplicationToolkit
                 var x = (from c in codes.Items
                          where c.IsEnabled &&
                             (this.IndexOf((c.CodeName + '|' + c.Spell).ToLower(), prefix) >= 0)
-                         orderby this.IndexOf((c.CodeName + '|' + c.Spell).ToLower(), prefix), c.CodeName ascending
+                         orderby c.ItemIndex, this.IndexOf((c.CodeName + '|' + c.Spell).ToLower(), prefix), c.CodeName ascending
                          select c);
                 codes.Items = x.Skip(pageSize * suggestion.PageNo).Take(pageSize).ToArray();
             }
