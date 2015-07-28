@@ -45,6 +45,17 @@ namespace InfoPlus.ApplicationToolkit.Entities
         // result
         public ResponseEntity<object> Result { get; set; }
 
+        /// <summary>
+        /// Whether release/beta instance 
+        /// </summary>
+        public bool Release { get; set; }
+
+        /// <summary>
+        /// AccessTokens for resources that: defined in workflow resources, granted by user, fetched by engine GUI
+        /// only available in Events that after user interact
+        /// </summary>
+        public IDictionary<string, string> Tokens { get; set; }
+
         // where, can be found in this.Step.RenderUri.
 
         public TChangedEntity LocateChangedObject<TChangedEntity>(InfoPlusEntity entity)

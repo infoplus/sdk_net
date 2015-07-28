@@ -17,6 +17,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
 
         public string WorkflowId { get; set; }      // 工作流Id
         public string WorkflowCode { get; set; }    // 工作流Code
+        public string Domain { get; set; }          // 工作流所属租户域名
 
         public string ApplicationId { get; set; }		// 表单所属的应用Id
         public string ApplicationName { get; set; }		// 表单所属的应用名称
@@ -30,7 +31,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
 
         public string RenderUri { get; set; }			// 查看/处理表单的Uri
 
-        public string TaskId { get; set; }              // GUID for this task.(also known as FormRemarkId)
+        public string TaskId { get; set; }              // GUID for this task.(also known as RemarkId)
         public string Remark { get; set; } 
 
         public string SplitIdentifier { get; set; }     //分支id

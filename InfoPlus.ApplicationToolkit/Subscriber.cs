@@ -68,11 +68,7 @@ namespace InfoPlus.ApplicationToolkit
 
                 // 2.Retrieve messengers
                 IList<AbstractMessenger> messengers = this.settings.Messengers;
-                var targets = from m in messengers
-                              where string.Equals(m.Workflow.Code, e.Step.WorkflowCode, StringComparison.CurrentCultureIgnoreCase)
-                                || m.Workflow.FullCode == "*@" + ApplicationSettings.DefaultDomain
-                              select m;
-
+                var targets = from m in messengers where m.Match(e) select m;
 
                 // 3.Dispatch messages. 
                 // Devoted to Charles Petzold, the first Win32 program, Orz by marstone, 2011/06/29

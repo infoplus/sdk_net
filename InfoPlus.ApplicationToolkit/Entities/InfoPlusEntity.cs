@@ -354,7 +354,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
                     return true;
                 }
 
-                if (type.IsPrimitive)
+                if (type.IsPrimitive || type == typeof(decimal) || type == typeof(decimal))
                 {
                     object[] args = new object[] { s, o };
                     bool result = (bool)type.InvokeMember("TryParse",
@@ -643,7 +643,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
             if (null == o) return null;
             Type type = o.GetType();
             // string is an exception
-            if (type == typeof(string) || type.IsPrimitive) return null;
+            if (type == typeof(string) || type == typeof(decimal) || type.IsPrimitive) return null;
             if (type.IsArray) return (Array)o;
             if (typeof(IEnumerable<object>).IsAssignableFrom(type))
                 return (o as IEnumerable<object>).ToArray();
@@ -720,7 +720,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
 	        foreach (var prop in entity.GetType().GetProperties())
 	        {
 	            var type = prop.PropertyType;
-	            if (type == typeof(string) || type.IsPrimitive) continue;
+                if (type == typeof(string) || type == typeof(decimal) || type.IsPrimitive) continue;
 	            if (type.IsArray || typeof(IEnumerable<object>).IsAssignableFrom(type))
 	            {
 	                var index = int.Parse(paths[0]);

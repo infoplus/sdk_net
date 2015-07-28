@@ -460,5 +460,20 @@ namespace InfoPlus.ApplicationToolkit
 
         #endregion
 
+
+        internal bool Match(InfoPlusEvent e)
+        {
+            // to compatible with old version without domain
+            if (null == e.Step.Domain)
+            {
+                return string.Equals(this.Workflow.Code, e.Step.WorkflowCode, StringComparison.CurrentCultureIgnoreCase);
+            }
+            else
+            {
+                if (this.Workflow.FullCode == "*@" + e.Step.Domain) return true;
+                return string.Equals(this.Workflow.FullCode, e.Step.WorkflowCode + "@" + e.Step.Domain,
+                                    StringComparison.CurrentCultureIgnoreCase);
+            }
+        }
     }
 }
