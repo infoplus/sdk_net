@@ -446,14 +446,14 @@ namespace InfoPlus.ApplicationToolkit
             if (null == pattern) return 0;
             if (null == source) return -1;
             int score = 0;
-            string[] patterns = pattern.Split(new char[] {','});
+            string[] patterns = pattern.Split(new char[] {',', ' '});
             foreach (string p in patterns)
             {
                 int i = source.IndexOf(p, StringComparison.Ordinal);
                 if (i < 0) return -1;
                 score += i;
             }
-            //给CodeName为空的加点分，让其排到后面去
+            // 给CodeName为空的加点分，让其排到后面去
             if (source.StartsWith("|")) score += 1000;
             return score;
         }

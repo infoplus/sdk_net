@@ -27,9 +27,8 @@ namespace InfoPlus.ApplicationToolkit.Entities
                            select c;
             return new CodeList { Items = filtered.ToList(), Name = this.Name };
         }
-    
-    }
 
+    }
 
 
     public enum CodeTypes
