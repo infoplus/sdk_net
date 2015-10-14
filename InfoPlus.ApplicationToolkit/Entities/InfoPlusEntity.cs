@@ -71,11 +71,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
                     if(null != e.Step.Instance.Creator)
                         en.InstanceOwner = e.Step.Instance.Creator.Account;
                 }
-
-                // en.workflowOperator = e.User;
-                // en.operateTime = UnixTime.ToDateTime(e.When);
             }
-
             return o;
         }
         

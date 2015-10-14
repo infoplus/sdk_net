@@ -19,6 +19,11 @@ namespace InfoPlus.ApplicationToolkit.Entities
         public IList<CodeItem> Items { get; set; }
         public DateTime Expire { get; set; }
 
+        /// <summary>
+        /// the method MUST be readonly, don't change this.Items
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         public virtual CodeList Filter(string filter)
         {
             var filtered = from c in this.Items
@@ -29,7 +34,6 @@ namespace InfoPlus.ApplicationToolkit.Entities
         }
 
     }
-
 
     public enum CodeTypes
     {

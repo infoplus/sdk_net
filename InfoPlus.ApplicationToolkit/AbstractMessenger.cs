@@ -398,7 +398,7 @@ namespace InfoPlus.ApplicationToolkit
         protected CodeList Suggest(CodeSuggestion suggestion)
         {
             CodeList codes = AbstractMessenger.cachedCodeLists[suggestion.Code];
-            if(null == codes)
+            if (null == codes)
                 throw new Exception("CodeTable invalid.");
 
             var parent = suggestion.Parent;
@@ -406,12 +406,18 @@ namespace InfoPlus.ApplicationToolkit
             var prefix = suggestion.Prefix;
             var pageSize = suggestion.PageSize;
             if (pageSize <= 0)
-                pageSize = 15;
-            // clone a copy.
-            codes = new CodeList { Items = new List<CodeItem>(codes.Items), Name = codes.Name };
-            if (false == string.IsNullOrEmpty(parent) || false == isTopLevel)
             {
-                codes = codes.Filter(parent);
+                pageSize = 15;
+            }
+
+            {
+                IList<CodeItem> items = codes.Items;
+                if (false == string.IsNullOrEmpty(parent) || false == isTopLevel)
+                {
+                    items = codes.Filter(parent).Items;
+                }
+                // make a copy.
+                codes = new CodeList { Items = new List<CodeItem>(items), Name = codes.Name };
             }
 
             if (prefix.Length == 0)
