@@ -17,6 +17,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
 
         public string WorkflowId { get; set; }      // 工作流Id
         public string WorkflowCode { get; set; }    // 工作流Code
+        public long WorkflowVersion { get; set; }   // 工作流版本的时间戳
         public string Domain { get; set; }          // 工作流所属租户域名
 
         public string ApplicationId { get; set; }		// 表单所属的应用Id

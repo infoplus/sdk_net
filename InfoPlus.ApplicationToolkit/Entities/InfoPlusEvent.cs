@@ -58,10 +58,14 @@ namespace InfoPlus.ApplicationToolkit.Entities
 
         // where, can be found in this.Step.RenderUri.
 
-        public TChangedEntity LocateChangedObject<TChangedEntity>(InfoPlusEntity entity)
+        public TChangedEntity LocateChangedObject<TChangedEntity>(InfoPlusEntity entity) where TChangedEntity : class
         {
             FormField eventField = this.EventField;
             if (eventField == null) return default(TChangedEntity);
+            if (entity is TChangedEntity)
+            {
+                return entity as TChangedEntity;
+            }
 
             string[] objNames = this.EventField.GroupObjectNames;
             string[] paths = this.FieldPath.Split('_');
@@ -72,9 +76,13 @@ namespace InfoPlus.ApplicationToolkit.Entities
                 Type type = result.GetType();
                 PropertyInfo property = type.GetProperty(objName);
                 result = ((IList)property.GetValue(result, null))[int.Parse(paths[i++])];
+                if (result is TChangedEntity)
+                {
+                    return (TChangedEntity)result;
+                }
             }
 
-            return (TChangedEntity)result;
+            return default(TChangedEntity);
         }
 
         public TSplitEntity LocateSplitObject<TSplitEntity>(InfoPlusEntity entity) where TSplitEntity : class
@@ -129,10 +137,14 @@ namespace InfoPlus.ApplicationToolkit.Entities
             return true;
         }
 
-        public IDictionary<string, object> ConvertChanged<T>(T changedEntity)
+        public IDictionary<string, object> ConvertChanged<T>(T changedEntity) where T : InfoPlusEntity
         {
             IDictionary<string, object> result = new Dictionary<string, object>();
             result.Add("form", JsonConvert.ExportToString(changedEntity));
+            if (changedEntity.EntityPath != null)
+            {
+                result.Add("path", changedEntity.EntityPath);
+            }
             return result;
         }
 

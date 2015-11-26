@@ -16,6 +16,10 @@ namespace InfoPlus.ApplicationToolkit.Entities
         public static readonly string FIELD_SUFFIX_NAME = "_Name";
         public static readonly string FIELD_SUFFIX_ATTR = "_Attr";
 
+        /// <summary>
+        /// Path of the entity,use it in fieldChange event to tell js which object you want to change.
+        /// </summary>
+        public string EntityPath { get; set; }
 
         /// <summary>
         /// Instance Id for the current Instance
@@ -82,11 +86,11 @@ namespace InfoPlus.ApplicationToolkit.Entities
             if (null == data) return default(T);
             Type type = typeof(T);
             object x = o;
-            o = (T)InfoPlusEntity.Convert(data, fields, ref x, 0, type, 0);
+            o = (T)InfoPlusEntity.Convert(data, fields, ref x, 0, type, 0,string.Empty);
             return o;
         }
 
-        static object Convert(IDictionary<string, object> data, IList<FormField> fields, ref object o, int depth, Type type, int index)
+        static object Convert(IDictionary<string, object> data, IList<FormField> fields, ref object o, int depth, Type type, int index,string path)
         {
             depth++;
             // not created before? create it.
@@ -97,6 +101,11 @@ namespace InfoPlus.ApplicationToolkit.Entities
                 if (null != propIndex && propIndex.PropertyType == typeof(int))
                 {
                     propIndex.SetValue(o, index, null);
+                }
+                var propPath = type.GetProperty("EntityPath");
+                if (null != propPath && propPath.PropertyType == typeof(string))
+                {
+                    propPath.SetValue(o, path, null);
                 }
                 /*
                 var fieldIndex = type.GetField("EntityIndex");
@@ -222,7 +231,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
                                 d.Add(key, arr.GetValue(i));
                                 if (isName && null != a0)
                                     d.Add(fieldName, a0.GetValue(i));
-                                InfoPlusEntity.Convert(d, fields, ref elementObject, depth, elementType, i);
+                                InfoPlusEntity.Convert(d, fields, ref elementObject, depth, elementType, i,path+"_"+i);
 
                                 // Save
                                 if (groupType.IsArray)
@@ -634,7 +643,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
             return groupName.Where(c => c == '/').Count() / 2;
         }
 
-        static Array ObjectToArray(object o)
+        public static Array ObjectToArray(object o)
         {
             if (null == o) return null;
             Type type = o.GetType();
