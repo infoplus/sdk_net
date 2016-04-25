@@ -24,6 +24,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
         // where the data located.
         // public string Path { get; set; }
         // Field Events
+        public string Group { get; set; }
         public string Field { get; set; }
         public string FieldPath { get; set; }
 
@@ -61,13 +62,25 @@ namespace InfoPlus.ApplicationToolkit.Entities
         public TChangedEntity LocateChangedObject<TChangedEntity>(InfoPlusEntity entity) where TChangedEntity : class
         {
             FormField eventField = this.EventField;
-            if (eventField == null) return default(TChangedEntity);
+            string[] objNames;
+
+            if (eventField == null)
+            {
+                if (this.Group == null)
+                {
+                    return default(TChangedEntity);
+                }
+                FormField fakeField = new FormField {GroupName = this.Group};
+                objNames = fakeField.GroupObjectNames;
+            } else {
+                objNames = eventField.GroupObjectNames;
+            }
             if (entity is TChangedEntity)
             {
                 return entity as TChangedEntity;
             }
 
-            string[] objNames = this.EventField.GroupObjectNames;
+            
             string[] paths = this.FieldPath.Split('_');
             int i = 1;
             Object result = entity;
