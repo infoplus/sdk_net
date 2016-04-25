@@ -51,18 +51,11 @@ namespace InfoPlus.ApplicationToolkit.Entities
         public string Prompt { get; set; }
 
         /// <summary>
-        /// for Expiration.
-        /// 0: do nothing
-        /// -1: kill
-        /// positive: seconds to extend.
+        /// 返回一个定时器，仅作用于STEP或INSTANCE的EXPIRING事件
+        /// 在EXPIRING之后，Messenger可以告知引擎下面四件事情之一：忽略/延时/终止/执行
+        /// 注意：如果timer为空，则使用工作流配置的默认选项，否则以timer为准
         /// </summary>
-        public long Then { get; set; }
-
-        /// <summary>
-        /// Then, after Expiration, submit an Action
-        /// </summary>
-        public long ThenAction { get; set; }
-
+        InfoPlusTimer timer { get; set; }
 
         /// <summary>
         /// Detail will contain exception infomation

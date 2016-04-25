@@ -65,6 +65,7 @@
     <Compile Include="Entities\InfoPlusEvent.cs" />
     <Compile Include="Entities\InfoPlusFile.cs" />
     <Compile Include="Entities\InfoPlusResponse.cs" />
+    <Compile Include="Entities\InfoPlusTimer.cs" />
     <Compile Include="Entities\ServiceType.cs" />
     <Compile Include="EventTypes.cs" />
     <Compile Include="Entities\FormField.cs" />
