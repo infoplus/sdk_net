@@ -55,7 +55,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
         /// 在EXPIRING之后，Messenger可以告知引擎下面四件事情之一：忽略/延时/终止/执行
         /// 注意：如果timer为空，则使用工作流配置的默认选项，否则以timer为准
         /// </summary>
-        InfoPlusTimer timer { get; set; }
+        public InfoPlusTimer Timer { get; set; }
 
         /// <summary>
         /// Detail will contain exception infomation
@@ -99,7 +99,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
             else
             {
                 r.Detail = r1.Detail;
-                if (r2.Detail!=string.Empty)
+                if (r2.Detail != string.Empty)
                 {
                     r.Detail += "\n" + r2.Detail;
                 }
@@ -146,7 +146,11 @@ namespace InfoPlus.ApplicationToolkit.Entities
                     }
                 }
             }
-
+            // assign first timer available.
+            if (r.Timer == null)
+            {
+                r.Timer = r1.Timer != null ? r1.Timer : r2.Timer;
+            }
             return r;
         }
     }
