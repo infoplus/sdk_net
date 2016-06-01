@@ -213,16 +213,17 @@ namespace InfoPlus.ApplicationToolkit
         /// 3.3. QueryFormData
         /// 作用：查询指定表单实例或表单步骤的表单数据。当仅指定到表单实例时，将返回最后一次表单提交后的表单数据。
         /// </summary>
-        /// <param name="instanceId">Start返回的instanceId</param>
+        /// <param name="workflowCode">用于获取token，请在配置文件中配置此工作流的secret和所需scope</param>
+        /// <param name="instanceId">流水号</param>
         /// <param name="formStepId">表单步骤Id</param>
         /// <returns></returns>
-        public static ResponseEntity<IDictionary<string, object>> QueryFormData(long entryId, long formStepId)
+        public static ResponseEntity<IDictionary<string, object>> QueryFormData(string workflowCode, long entryId, long formStepId)
         {
             string method = InfoPlusServices.METHOD_DATA;
             var nvc = new List<KeyValuePair<string, object>>();
             nvc.Add(new KeyValuePair<string, object>(InfoPlusServices.RESOURCE_IDENTIFIER, entryId));
             nvc.Add(new KeyValuePair<string, object>("formStepId", formStepId));
-            return ApplicationSettings.FindValidApp().Invoke<IDictionary<string, object>>(method, nvc);
+            return ApplicationSettings.FindApp(workflowCode).Invoke<IDictionary<string, object>>(method, nvc);
         }
 
         /// <summary>

@@ -318,7 +318,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
                     propertyOfProperty.SetValue(code, val, null);
                 }
             }
-            else
+            else if(!isName)    // bypass _Name for atom types
             {
                 if (null != val)
                 {
