@@ -32,7 +32,17 @@ namespace InfoPlus.ApplicationToolkit.Entities
         INSTANCE_KILLING = 0x01 << 20,
         INSTANCE_KILLED = 0x01 << 21,
 
-        INSTANCE_COMPENSATION = 0x01 << 22
+        INSTANCE_COMPENSATION = 0x01 << 22,
+
+        ACTION_WITHDRAWING = 0x01 << 23,
+        ACTION_WITHDRAWN = 0x01 << 24,
+        INSTANCE_SAVING = 0x01 << 25,
+        INSTANCE_SAVED = 0x01 << 26,
+
+        INSTANCE_PRINTNG = 0x01 << 27,
+        STEP_EXPORING = 0x01 << 28,
+        INSTANCE_EXPORING = 0x01 << 29
+
 
     }
 }
