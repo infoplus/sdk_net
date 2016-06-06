@@ -40,8 +40,8 @@ namespace InfoPlus.ApplicationToolkit.Entities
         INSTANCE_SAVED = 0x01 << 26,
 
         INSTANCE_PRINTNG = 0x01 << 27,
-        STEP_EXPORING = 0x01 << 28,
-        INSTANCE_EXPORING = 0x01 << 29
+        STEP_EXPORTING = 0x01 << 28,
+        INSTANCE_EXPORTING = 0x01 << 29
 
 
     }
