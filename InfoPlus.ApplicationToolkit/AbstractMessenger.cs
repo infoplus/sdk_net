@@ -82,7 +82,7 @@ namespace InfoPlus.ApplicationToolkit
         public virtual InfoPlusResponse OnInstanceCompleted(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnInstanceExpiring(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnInstanceExpired(InfoPlusEvent e) { return this.Update(e); }
-        public virtual InfoPlusResponse OnInstanceKillling(InfoPlusEvent e) { return this.Update(e); }
+        public virtual InfoPlusResponse OnInstanceKilling(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnInstanceKilled(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnInstanceCompensation(InfoPlusEvent e) { return this.Update(e); }
 
