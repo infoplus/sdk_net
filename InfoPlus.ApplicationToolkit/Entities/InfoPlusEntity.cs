@@ -51,13 +51,18 @@ namespace InfoPlus.ApplicationToolkit.Entities
         // public InfoPlusUser workflowOperator { get; set; }
         // public DateTime ? operateTime { get; set; }
 
+        /// <summary>
+        /// Convert InfoPlusEvent FormData to strongly-typed entity
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="e"></param>
+        /// <returns></returns>
         public static T Convert<T>(InfoPlusEvent e)
         {
             if (null == e) return default(T);
 
             // 1. FormData
-            T o = default(T);
-            InfoPlusEntity.Convert<T>(e.FormData, e.Fields, ref o);
+            T o = InfoPlusEntity.Convert<T>(e.FormData, e.Fields, false);
 
             // 2.InfoPlusEntity Related
             InfoPlusEntity en = o as InfoPlusEntity;
@@ -78,19 +83,24 @@ namespace InfoPlus.ApplicationToolkit.Entities
             }
             return o;
         }
-        
 
-        // Convert data recursively.
-        public static T Convert<T>(IDictionary<string, object> data, IList<FormField> fields, ref T o)
+        /// <summary>
+        /// Convert data recursively, from weakly-typed(transfer presentation map) to strongly-typed entity.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <param name="fields"></param>
+        /// <param name="withIndex">true if data are from other sources including api. externData with set all EntityIndex to -1</param>
+        /// <returns></returns>
+        public static T Convert<T>(IDictionary<string, object> data, IList<FormField> fields, bool external)
         {
             if (null == data) return default(T);
             Type type = typeof(T);
-            object x = o;
-            o = (T)InfoPlusEntity.Convert(data, fields, ref x, 0, type, 0,string.Empty);
-            return o;
+            object x = default(T);
+            return (T)InfoPlusEntity.Convert(data, fields, ref x, 0, type, 0, string.Empty, external);
         }
 
-        static object Convert(IDictionary<string, object> data, IList<FormField> fields, ref object o, int depth, Type type, int index,string path)
+        static object Convert(IDictionary<string, object> data, IList<FormField> fields, ref object o, int depth, Type type, int index, string path, bool external)
         {
             depth++;
             // not created before? create it.
@@ -100,7 +110,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
                 var propIndex = type.GetProperty("EntityIndex");
                 if (null != propIndex && propIndex.PropertyType == typeof(int))
                 {
-                    propIndex.SetValue(o, index, null);
+                    propIndex.SetValue(o, (external ? -1 : index), null);
                 }
                 var propPath = type.GetProperty("EntityPath");
                 if (null != propPath && propPath.PropertyType == typeof(string))
@@ -231,7 +241,8 @@ namespace InfoPlus.ApplicationToolkit.Entities
                                 d.Add(key, arr.GetValue(i));
                                 if (isName && null != a0)
                                     d.Add(fieldName, a0.GetValue(i));
-                                InfoPlusEntity.Convert(d, fields, ref elementObject, depth, elementType, i,path+"_"+i);
+                                string nextPath = path + "_" + i;
+                                InfoPlusEntity.Convert(d, fields, ref elementObject, depth, elementType, i, nextPath, external);
 
                                 // Save
                                 if (groupType.IsArray)
@@ -408,6 +419,13 @@ namespace InfoPlus.ApplicationToolkit.Entities
             catch (Exception) { return false; }
         }
 
+        /// <summary>
+        /// Convert strong-typed entity to map presentation for transfer
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="o"></param>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public static IDictionary<string, object> Convert<T>(T o, IList<FormField> fields)
         {
             IDictionary<string, object> data = null;
