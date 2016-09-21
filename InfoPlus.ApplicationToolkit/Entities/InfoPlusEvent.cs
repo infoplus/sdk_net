@@ -11,6 +11,8 @@ namespace InfoPlus.ApplicationToolkit.Entities
 {
     public class InfoPlusEvent
     {
+        public const string KEY_URL = "_VAR_URL";
+
         // who, sometimes can also be found in Step.AssignUser
         public InfoPlusUser User { get; set; }
         // when
@@ -159,6 +161,27 @@ namespace InfoPlus.ApplicationToolkit.Entities
                 result.Add("path", changedEntity.EntityPath);
             }
             return result;
+        }
+
+        /// <summary>
+        /// query params from from start/render uri
+        /// </summary>
+        public IDictionary<string, string> CustomizedQueryParams
+        {
+            get
+            {
+                try
+                {
+                    string urlAttrsJson = (string)this.FormData[KEY_URL + InfoPlusEntity.FIELD_SUFFIX_ATTR];
+                    IDictionary<string, string> urlAttrs = JsonConvert.Import<IDictionary<string, string>>(urlAttrsJson);
+                    return (null != urlAttrs) ? urlAttrs : new Dictionary<string, string>();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Trace.WriteLine(ex);
+                    return new Dictionary<string, string>();
+                }
+            }
         }
 
         /*

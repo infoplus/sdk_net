@@ -85,6 +85,7 @@ namespace InfoPlus.ApplicationToolkit
         public virtual InfoPlusResponse OnInstanceKilling(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnInstanceKilled(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnInstanceCompensation(InfoPlusEvent e) { return this.Update(e); }
+        public virtual InfoPlusResponse OnInstanceExporting(InfoPlusEvent e) { return this.Update(e); }
 
         public virtual InfoPlusResponse OnActionSaving(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnActionSaved(InfoPlusEvent e) { return this.Update(e); }

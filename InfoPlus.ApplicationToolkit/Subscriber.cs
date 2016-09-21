@@ -61,7 +61,7 @@ namespace InfoPlus.ApplicationToolkit
 
                 InfoPlusEvent e = JsonConvert.Import<InfoPlusEvent>(eventData);
                 if (null == e)
-                    return JsonConvert.ExportToString(new InfoPlusResponse(true, true, "InfoPlusEvent malformed."));
+                    return JsonConvert.ExportToString(new InfoPlusResponse(true, true, "InfoPlusEvent malformed"));
 
                 var workflowCode = e.Step.WorkflowCode;
                 if (false == e.Step.WorkflowCode.Contains("@")) workflowCode += ("@" + ApplicationSettings.DefaultDomain);
