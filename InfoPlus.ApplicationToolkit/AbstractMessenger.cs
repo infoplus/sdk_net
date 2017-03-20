@@ -478,8 +478,17 @@ namespace InfoPlus.ApplicationToolkit
             else
             {
                 if (this.Workflow.FullCode == "*@" + e.Step.Domain) return true;
-                return string.Equals(this.Workflow.FullCode, e.Step.WorkflowCode + "@" + e.Step.Domain,
+                var match = string.Equals(this.Workflow.FullCode, e.Step.WorkflowCode + "@" + e.Step.Domain,
                                     StringComparison.CurrentCultureIgnoreCase);
+
+                if (match && 0 != this.Workflow.Version) 
+                {
+                    if (this.Workflow.Version != e.Step.WorkflowVersion) 
+                    {
+                        match &= false;
+                    }
+                }
+                return match;                 
             }
         }
     }

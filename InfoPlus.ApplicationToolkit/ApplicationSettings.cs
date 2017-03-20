@@ -80,13 +80,14 @@ namespace InfoPlus.ApplicationToolkit
                     var secret = (string)this.parseAttribute<string>(ms, "secret", null);
                     var scope = (string)this.parseAttribute<string>(ms, "scope", null);
                     var release = (bool)this.parseAttribute<bool>(ms, "release", true);
+                    var version = (long)this.parseAttribute<long>(ms, "version", 0);
                     // compatable 2
                     if (string.IsNullOrEmpty(code) && ApplicationSettings.ServiceType != ServiceType.Entitle)
                         throw new ConfigurationErrorsException("workflow code is not set.", ms);
                     InfoPlusApplication app = null;
                     if (null != code)
                     {
-                        app = new InfoPlusApplication(code, secret, scope, _AuthEndPoint, release);
+                        app = new InfoPlusApplication(code, secret, scope, _AuthEndPoint, release, version);
                         ApplicationSettings.workflows[app.FullCode] = app;
                     }
                     foreach (XmlNode m in ms)
@@ -98,9 +99,10 @@ namespace InfoPlus.ApplicationToolkit
                         var secret2 = (string)this.parseAttribute<string>(m, "secret", null);
                         var scope2 = (string)this.parseAttribute<string>(m, "scope", null);
                         var release2 = (bool)this.parseAttribute<bool>(m, "release", true);
+                        var version2 = (long)this.parseAttribute<long>(m, "version", 0);
                         if (false == string.IsNullOrEmpty(code2))
                         {
-                            appOverride = new InfoPlusApplication(code2, secret2, scope2, _AuthEndPoint, release2);
+                            appOverride = new InfoPlusApplication(code2, secret2, scope2, _AuthEndPoint, release2, version2);
                             ApplicationSettings.workflows[appOverride.FullCode] = appOverride;
                         }
                         
