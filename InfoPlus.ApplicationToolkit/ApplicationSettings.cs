@@ -80,14 +80,16 @@ namespace InfoPlus.ApplicationToolkit
                     var secret = (string)this.parseAttribute<string>(ms, "secret", null);
                     var scope = (string)this.parseAttribute<string>(ms, "scope", null);
                     var release = (bool)this.parseAttribute<bool>(ms, "release", true);
-                    var version = (long)this.parseAttribute<long>(ms, "version", 0);
+                    var minVersion = (long)this.parseAttribute<long>(ms, "minVersion", 0);
+                    var maxVersion = (long)this.parseAttribute<long>(ms, "maxVersion", long.MaxValue);
+
                     // compatable 2
                     if (string.IsNullOrEmpty(code) && ApplicationSettings.ServiceType != ServiceType.Entitle)
                         throw new ConfigurationErrorsException("workflow code is not set.", ms);
                     InfoPlusApplication app = null;
                     if (null != code)
                     {
-                        app = new InfoPlusApplication(code, secret, scope, _AuthEndPoint, release, version);
+                        app = new InfoPlusApplication(code, secret, scope, _AuthEndPoint, release, minVersion, maxVersion);
                         ApplicationSettings.workflows[app.FullCode] = app;
                     }
                     foreach (XmlNode m in ms)
@@ -99,10 +101,12 @@ namespace InfoPlus.ApplicationToolkit
                         var secret2 = (string)this.parseAttribute<string>(m, "secret", null);
                         var scope2 = (string)this.parseAttribute<string>(m, "scope", null);
                         var release2 = (bool)this.parseAttribute<bool>(m, "release", true);
-                        var version2 = (long)this.parseAttribute<long>(m, "version", 0);
+                        var minVersion2 = (long)this.parseAttribute<long>(m, "minVersion", 0);
+                        var maxVersion2 = (long)this.parseAttribute<long>(m, "maxVersion", long.MaxValue);
+
                         if (false == string.IsNullOrEmpty(code2))
                         {
-                            appOverride = new InfoPlusApplication(code2, secret2, scope2, _AuthEndPoint, release2, version2);
+                            appOverride = new InfoPlusApplication(code2, secret2, scope2, _AuthEndPoint, release2, minVersion2, maxVersion2);
                             ApplicationSettings.workflows[appOverride.FullCode] = appOverride;
                         }
                         

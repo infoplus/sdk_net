@@ -357,7 +357,6 @@ namespace InfoPlus.ApplicationToolkit
 
         #endregion
 
-
         #region CachedCodeTables
 
         static object _evictLock = new object();
@@ -480,15 +479,8 @@ namespace InfoPlus.ApplicationToolkit
                 if (this.Workflow.FullCode == "*@" + e.Step.Domain) return true;
                 var match = string.Equals(this.Workflow.FullCode, e.Step.WorkflowCode + "@" + e.Step.Domain,
                                     StringComparison.CurrentCultureIgnoreCase);
-
-                if (match && 0 != this.Workflow.Version) 
-                {
-                    if (this.Workflow.Version != e.Step.WorkflowVersion) 
-                    {
-                        match &= false;
-                    }
-                }
-                return match;                 
+                if (!match) return false;
+                return (e.Step.WorkflowVersion >= this.Workflow.MinVersion && e.Step.WorkflowVersion <= this.Workflow.MaxVersion);
             }
         }
     }

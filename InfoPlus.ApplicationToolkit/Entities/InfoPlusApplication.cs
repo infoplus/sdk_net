@@ -16,9 +16,10 @@ namespace InfoPlus.ApplicationToolkit.Entities
         public string Secret { get; set; }
         public string Scope { get; set; }
         public bool Release { get; set; }
-        public long Version { get; set; }
+        public long MinVersion { get; set; }
+        public long MaxVersion { get; set; }
 
-        public InfoPlusApplication(string code, string secret, string scope, string authUri, bool release, long version)
+        public InfoPlusApplication(string code, string secret, string scope, string authUri, bool release, long minVersion, long maxVersion)
         {
             if(false == code.Contains("@"))
                 code = code + "@" + ApplicationSettings.DefaultDomain;
@@ -27,7 +28,8 @@ namespace InfoPlus.ApplicationToolkit.Entities
             this.Secret = secret;
             this.Scope = scope;
             this.Release = release;
-            this.Version = version;
+            this.MinVersion = minVersion;
+            this.MaxVersion = maxVersion;
 
             if (false == string.IsNullOrEmpty(authUri))
             {
