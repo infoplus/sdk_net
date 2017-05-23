@@ -63,9 +63,6 @@ namespace InfoPlus.ApplicationToolkit
                 if (null == e)
                     return JsonConvert.ExportToString(new InfoPlusResponse(true, true, "InfoPlusEvent malformed"));
 
-                var workflowCode = e.Step.WorkflowCode;
-                if (false == e.Step.WorkflowCode.Contains("@")) workflowCode += ("@" + ApplicationSettings.DefaultDomain);
-
                 // 2.Retrieve messengers
                 IList<AbstractMessenger> messengers = this.settings.Messengers;
                 var targets = from m in messengers where m.Match(e) select m;

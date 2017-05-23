@@ -258,6 +258,12 @@ namespace InfoPlus.ApplicationToolkit
             return this.CallEventMethodWrapper(method, e);
         }
 
+        public InfoPlusResponse OnStepExporting(InfoPlusEvent e)
+        {
+            string method = string.Format("OnStep{0}Exporting", AbstractMessenger.ToFirstUpper(e.Step.StepCode));
+            return this.CallEventMethodWrapper(method, e);
+        }
+
         public InfoPlusResponse OnStepExpiring(InfoPlusEvent e)
         {
             string method = string.Format("OnStep{0}Expiring", AbstractMessenger.ToFirstUpper(e.Step.StepCode));
@@ -476,10 +482,13 @@ namespace InfoPlus.ApplicationToolkit
             }
             else
             {
-                if (this.Workflow.FullCode == "*@" + e.Step.Domain) return true;
-                var match = string.Equals(this.Workflow.FullCode, e.Step.WorkflowCode + "@" + e.Step.Domain,
-                                    StringComparison.CurrentCultureIgnoreCase);
+                // match code
+                var match = string.Equals(this.Workflow.Code, e.Step.WorkflowCode, StringComparison.CurrentCultureIgnoreCase) || this.Workflow.Code == "*";
                 if (!match) return false;
+                // match domain
+                 match = string.Equals(this.Workflow.Domain, e.Step.Domain, StringComparison.CurrentCultureIgnoreCase) || this.Workflow.Domain == "*";
+                if (!match) return false;
+                // match version
                 return (e.Step.WorkflowVersion >= this.Workflow.MinVersion && e.Step.WorkflowVersion <= this.Workflow.MaxVersion);
             }
         }
