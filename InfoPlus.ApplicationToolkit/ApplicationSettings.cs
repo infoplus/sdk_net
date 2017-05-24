@@ -162,17 +162,24 @@ namespace InfoPlus.ApplicationToolkit
             if (null == attr)
                 return defaultValue;
             var val = attr.Value;
-            if (typeof(T) == typeof(string)) 
+            if (typeof(T) == typeof(string))
                 return val;
             else if (typeof(T) == typeof(int))
             {
                 int e;
-                if(int.TryParse(val, out e)) return e;
+                if (int.TryParse(val, out e)) return e;
                 return defaultValue;
-            } else if(typeof(T) == typeof(bool)) 
+            }
+            else if (typeof(T) == typeof(long))
+            {
+                long e;
+                if (long.TryParse(val, out e)) return e;
+                return defaultValue;
+            }
+            else if (typeof(T) == typeof(bool))
             {
                 bool e;
-                if(bool.TryParse(val, out e)) return e;
+                if (bool.TryParse(val, out e)) return e;
                 return defaultValue;
             }
             throw new NotSupportedException();
