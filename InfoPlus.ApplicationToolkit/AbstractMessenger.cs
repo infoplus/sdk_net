@@ -86,6 +86,7 @@ namespace InfoPlus.ApplicationToolkit
         public virtual InfoPlusResponse OnInstanceKilled(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnInstanceCompensation(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnInstanceExporting(InfoPlusEvent e) { return this.Update(e); }
+        public virtual InfoPlusResponse OnInstanceRendering(InfoPlusEvent e) { return this.Update(e); }
 
         public virtual InfoPlusResponse OnActionSaving(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnActionSaved(InfoPlusEvent e) { return this.Update(e); }
@@ -276,6 +277,38 @@ namespace InfoPlus.ApplicationToolkit
             return this.CallEventMethodWrapper(method, e);
         }
 
+        public InfoPlusResponse OnStepWithdrawing(InfoPlusEvent e)
+        {
+            if (string.IsNullOrEmpty(e.ActionCode))
+            {
+                string method = string.Format("OnStep{0}Withdrawing", AbstractMessenger.ToFirstUpper(e.Step.StepCode));
+                return this.CallEventMethodWrapper(method, e);
+            }
+            else 
+            {
+                string method = string.Format("OnStep{0}Action{1}Withdrawing",
+                        AbstractMessenger.ToFirstUpper(e.Step.StepCode),
+                        AbstractMessenger.ToFirstUpper(e.ActionCode));
+                return this.CallEventMethodWrapper(method, e);
+            }
+        }
+
+        public InfoPlusResponse OnStepWithdrawn(InfoPlusEvent e)
+        {
+            if (string.IsNullOrEmpty(e.ActionCode))
+            {
+                string method = string.Format("OnStep{0}Withdrawn", AbstractMessenger.ToFirstUpper(e.Step.StepCode));
+                return this.CallEventMethodWrapper(method, e);
+            }
+            else
+            {
+                string method = string.Format("OnStep{0}Action{1}Withdrawn",
+                        AbstractMessenger.ToFirstUpper(e.Step.StepCode),
+                        AbstractMessenger.ToFirstUpper(e.ActionCode));
+                return this.CallEventMethodWrapper(method, e);
+            }
+        }
+
         InfoPlusResponse CallEventMethodWrapper(string method, InfoPlusEvent e)
         {
             var response = this.Update(e);
@@ -310,7 +343,7 @@ namespace InfoPlus.ApplicationToolkit
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        InfoPlusResponse Update(InfoPlusEvent e)
+        protected InfoPlusResponse Update(InfoPlusEvent e)
         {
             return new InfoPlusResponse();
         }

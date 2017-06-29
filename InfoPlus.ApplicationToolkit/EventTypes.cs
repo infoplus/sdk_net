@@ -34,14 +34,15 @@ namespace InfoPlus.ApplicationToolkit.Entities
 
         INSTANCE_COMPENSATION = 0x01 << 22,
 
-        ACTION_WITHDRAWING = 0x01 << 23,
-        ACTION_WITHDRAWN = 0x01 << 24,
+        STEP_WITHDRAWING = 0x01 << 23,
+        STEP_WITHDRAWN = 0x01 << 24,
         INSTANCE_SAVING = 0x01 << 25,
         INSTANCE_SAVED = 0x01 << 26,
 
         INSTANCE_PRINTNG = 0x01 << 27,
         STEP_EXPORTING = 0x01 << 28,
-        INSTANCE_EXPORTING = 0x01 << 29
+        INSTANCE_EXPORTING = 0x01 << 29,
+        INSTANCE_RENDERING = 0x01 << 30
 
 
     }
