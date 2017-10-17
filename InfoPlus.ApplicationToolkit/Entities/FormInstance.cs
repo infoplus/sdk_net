@@ -25,13 +25,13 @@ namespace InfoPlus.ApplicationToolkit.Entities
         public string Tags { get; set; }                // 标签
         
         public long Version { get; set; }               // 工作流版本
-        public int rating { get; set; }                 // 评价
-        public string review { get; set; }              // 评价内容
-        public bool release { get; set; }               // 是否发布版
-        public string token { get; set; }               // 匿名访问的Token
-        // public bool archived { get; set; }               // 是否已删除
-        // public long deadline { get; set; }              // 承诺办理时间
-        // public long timeout { get; set; }               // 流程超时时间
+        public int Rating { get; set; }                 // 评价
+        public string Review { get; set; }              // 评价内容
+        public bool Release { get; set; }               // 是否发布版
+        public string Token { get; set; }               // 匿名访问的Token
+        // public bool Archived { get; set; }               // 是否已删除
+        // public long Deadline { get; set; }              // 承诺办理时间
+        // public long Timeout { get; set; }               // 流程超时时间
 
 
     }
