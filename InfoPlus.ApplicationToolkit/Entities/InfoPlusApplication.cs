@@ -1,5 +1,4 @@
-﻿using SJTU.SJTURight.ApplicationToolkit;
-using Studio.Foundation.Json;
+﻿using Studio.Foundation.Json;
 using Studio.Foundation.Json.Core.Conversion;
 using Studio.OAuth2;
 using Studio.OAuth2.Entities;
@@ -114,11 +113,14 @@ namespace InfoPlus.ApplicationToolkit.Entities
             switch (ApplicationSettings.ServiceType)
             { 
                 case ServiceType.Entitle:
+                    throw new NotSupportedException("Entitle ATK dependence removed since 2017/10/18");
+                    /*
                     var serviceId = ApplicationSettings.INFOPLUS_SERVICE.Identification;
                     object[] args = new object[arguments.Count];
                     for (int i = 0; i < arguments.Count; i++) args[i] = arguments[i].Value;
                     result = EntitleServices.InvokeApplicationService(serviceId, endPoint, method, args);
                     break;
+                    */
                 case ServiceType.OAuth2:
                     var map = this.Release ? InfoPlusServices.METHODS_MAP : InfoPlusServices.METHODS_MAP_DEBUG;
                     if (false == map.ContainsKey(method))
@@ -142,7 +144,7 @@ namespace InfoPlus.ApplicationToolkit.Entities
                     break;
                 case ServiceType.Insecure:
                     int count = 1;
-                    args = new object[count + arguments.Count];
+                    object[] args = new object[count + arguments.Count];
                     args[0] = ApplicationSettings.INFOPLUS_MAGIC;
                     // args[1] = ApplicationSettings.VERSION;
                     for (int i = 0; i < arguments.Count; i++) args[i + count] = arguments[i].Value;

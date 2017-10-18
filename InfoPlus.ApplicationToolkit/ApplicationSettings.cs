@@ -323,7 +323,7 @@ namespace InfoPlus.ApplicationToolkit
         {
             byte[] x = encoding.GetBytes(input);
             byte[] y = new MD5CryptoServiceProvider().ComputeHash(x);
-            string result = SJTU.SJTURight.ApplicationToolkit.HexEncoding.ToString(y);
+            string result = HexEncoding.ToString(y);
             return result.ToLower();
         }
 

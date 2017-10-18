@@ -8,7 +8,6 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Web.Services.Description;
 using System.Web;
-using SJTU.SJTURight.ApplicationToolkit;
 using Studio.Foundation.Json.Core.Conversion;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -171,21 +170,24 @@ namespace InfoPlus.ApplicationToolkit
 
                 switch (ApplicationSettings.ServiceType)
                 {
-                    case ServiceType.Entitle: 
-                        string key = SJTU.SJTURight.ApplicationToolkit.EntitleServices.ClientKey;
-                        ServerTicket ticket = new ServerTicket(key, this.Context.Request.UserHostAddress);
+                    case ServiceType.Entitle:
+                        throw new NotSupportedException("Entitle ATK dependence removed since 2017/10/18");
+                    /*
+                    string key = SJTU.SJTURight.ApplicationToolkit.EntitleServices.ClientKey;
+                    ServerTicket ticket = new ServerTicket(key, this.Context.Request.UserHostAddress);
 
-                        string reason;
-                        Invoker invoker = ticket.Validate(verify, (int)ValidateLevels.Expire, out reason, args);
+                    string reason;
+                    Invoker invoker = ticket.Validate(verify, (int)ValidateLevels.Expire, out reason, args);
 
-                        details = string.Format("expire:{0}|clientId:{1}|clientIP:{2}|session:{3}|reason:{4}",
-                            invoker.ExpireStamp, invoker.InvokerId, invoker.InvokerIP, invoker.SessionKey, reason);
+                    details = string.Format("expire:{0}|clientId:{1}|clientIP:{2}|session:{3}|reason:{4}",
+                        invoker.ExpireStamp, invoker.InvokerId, invoker.InvokerIP, invoker.SessionKey, reason);
 
-                        valid = invoker.IsValid;
-                        break;
+                    valid = invoker.IsValid;
+                    break;
+                    */
                     case ServiceType.OAuth2:
                         var authorization = HttpContext.Current.Request.Headers["Authorization"];
-                        verify =  ApplicationSettings.StringCut(authorization, "response=\"", "\"");;
+                        verify =  ApplicationSettings.StringCut(authorization, "response=\"", "\"");
                         var method = HttpContext.Current.Request.HttpMethod;
                         var uri1 =  ApplicationSettings.StringCut(authorization, "uri=\"", "\"");;
                         /* uri check is useless, disable it, by marstone

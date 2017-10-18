@@ -38,9 +38,6 @@
     <AssemblyOriginatorKeyFile>SJTU.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SJTU.SJTURight.ApplicationToolkit">
-      <HintPath>..\Libraries\SJTU.SJTURight.ApplicationToolkit.dll</HintPath>
-    </Reference>
     <Reference Include="Studio.Foundation.Json">
       <HintPath>..\Libraries\Studio.Foundation.Json.dll</HintPath>
     </Reference>
@@ -74,6 +71,7 @@
     <Compile Include="AbstractMessenger.cs" />
     <Compile Include="Entities\AlterEntities.cs" />
     <Compile Include="GBKSpell.cs" />
+    <Compile Include="HexEncoding.cs" />
     <Compile Include="OAuth2Consumer.cs" />
     <Compile Include="Subscriber.cs">
       <SubType>Component</SubType>
@@ -85,6 +83,7 @@
     <Compile Include="Entities\InfoPlusUser.cs" />
     <Compile Include="ISubscriber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebServiceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SJTU.snk" />

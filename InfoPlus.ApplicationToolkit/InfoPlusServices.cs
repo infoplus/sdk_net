@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel;
-using SJTU.SJTURight.ApplicationToolkit;
 using Studio.Foundation.Json;
 using Studio.Foundation.Json.Core.Conversion;
 using InfoPlus.ApplicationToolkit.Entities;
