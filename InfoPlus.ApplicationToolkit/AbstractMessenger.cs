@@ -93,7 +93,7 @@ namespace InfoPlus.ApplicationToolkit
         public virtual InfoPlusResponse OnFieldChanging(InfoPlusEvent e) { return this.Update(e); }
         
         /* 
-         * The following event are divided.
+         * The following events are divided.
         public virtual InfoPlusResponse OnActionDoing(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnActionDone(InfoPlusEvent e) { return this.Update(e); }
         public virtual InfoPlusResponse OnStepRendering(InfoPlusEvent e) { return this.Update(e); }
@@ -118,11 +118,11 @@ namespace InfoPlus.ApplicationToolkit
                 string code = e.Suggestion.Code;
                 var cl = AbstractMessenger.cachedCodeLists;
                 var ce = AbstractMessenger.cachedCodeExpires;
-                if (false == cl.ContainsKey(code) || ce[code] < UnixTime.ToInt64(DateTime.Now))
+                if (e.Suggestion.Dirty || false == cl.ContainsKey(code) || ce[code] < UnixTime.ToInt64(DateTime.Now))
                 {
                     lock (_code_lock)
                     {
-                        if (false == cl.ContainsKey(code) || ce[code] < UnixTime.ToInt64(DateTime.Now))
+                        if (e.Suggestion.Dirty || false == cl.ContainsKey(code) || ce[code] < UnixTime.ToInt64(DateTime.Now))
                         {
                             CodeList list = this.OnQueryCodeTable(code);
                             if (null == list || null == list.Items || 0 == list.Items.Count)
