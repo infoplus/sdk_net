@@ -15,6 +15,8 @@ namespace InfoPlus.ApplicationToolkit.Entities
 
         // who, sometimes can also be found in Step.AssignUser
         public InfoPlusUser User { get; set; }
+        // who actually made the move. in other words, the *Entruster*
+        public InfoPlusUser ActualUser { get; set; }
         // when
         public long When { get; set; }
 
